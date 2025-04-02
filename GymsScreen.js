@@ -29,6 +29,12 @@ export default function GymsScreen() {
     return (
         <View style={styles.container}>
             <Text>Gyms Screen</Text>
+            <FlatList
+                data={gyms}
+                renderItem={({item}) => (
+                    <Text>{item.name}</Text>
+                )}
+            />
         </View>
     );
 }
