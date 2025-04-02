@@ -21,7 +21,6 @@ export default function GymsScreen() {
             }
             const data = await response.json();
             setGyms(data);
-            console.log(data);
         } catch (error) {
             console.error(error.message);
         }
