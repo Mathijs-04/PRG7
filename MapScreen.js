@@ -1,7 +1,6 @@
-import React from 'react';
-import {View, Text, StyleSheet} from 'react-native';
-import MapView from "react-native-maps";
-import {useState, useEffect} from "react";
+import React, { useState, useEffect } from 'react';
+import { View, Text, StyleSheet } from 'react-native';
+import MapView, { Marker } from 'react-native-maps';
 
 export default function MapScreen() {
     const [gyms, setGyms] = useState([]);
@@ -23,7 +22,6 @@ export default function MapScreen() {
             }
             const data = await response.json();
             setGyms(data);
-            console.log(gyms);
         } catch (error) {
             console.error(error.message);
         }
@@ -34,7 +32,21 @@ export default function MapScreen() {
             <Text>Map Screen</Text>
             <MapView
                 style={styles.map}
-            />
+                initialRegion={{
+                    latitude: 51.9225,
+                    longitude: 4.479,
+                    latitudeDelta: 0.1,
+                    longitudeDelta: 0.1,
+                }}
+            >
+                {gyms.map(gym => (
+                    <Marker
+                        key={gym.id}
+                        coordinate={{ latitude: gym.latitude, longitude: gym.longitude }}
+                        title={gym.name}
+                    />
+                ))}
+            </MapView>
         </View>
     );
 }
@@ -47,9 +59,6 @@ const styles = StyleSheet.create({
     },
     map: {
         width: '100%',
-        height: '50%',
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
+        height: '100%',
     },
 });
