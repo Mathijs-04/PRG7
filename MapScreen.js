@@ -10,7 +10,7 @@ export default function MapScreen() {
     }, []);
 
     async function getGyms() {
-        const url = "https://raw.githubusercontent.com/Mathijs-04/PRG7-JSON/main/gyms.json";
+        const url = `https://raw.githubusercontent.com/Mathijs-04/PRG7-JSON/main/gyms.json?timestamp=${new Date().getTime()}`;
         try {
             const response = await fetch(url, {
                 headers: {
@@ -32,11 +32,11 @@ export default function MapScreen() {
             <Text>Map Screen</Text>
             <MapView
                 style={styles.map}
-                initialRegion={{
-                    latitude: 51.9225,
-                    longitude: 4.479,
-                    latitudeDelta: 0.1,
-                    longitudeDelta: 0.1,
+                region={{
+                    latitude: 52.1326,
+                    longitude: 5.2913,
+                    latitudeDelta: 4.0,
+                    longitudeDelta: 4.0,
                 }}
             >
                 {gyms.map(gym => (
