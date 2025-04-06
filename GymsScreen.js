@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
 import {View, Text, StyleSheet, FlatList} from 'react-native';
 
 export default function GymsScreen() {
@@ -25,6 +25,7 @@ export default function GymsScreen() {
             console.error(error.message);
         }
     }
+
     return (
         <View style={styles.container}>
             <Text>Gyms Screen</Text>

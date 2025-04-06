@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import MapView, { Marker } from 'react-native-maps';
+import React, {useState, useEffect} from 'react';
+import {View, Text, StyleSheet} from 'react-native';
+import MapView, {Marker} from 'react-native-maps';
 
 export default function MapScreen() {
     const [gyms, setGyms] = useState([]);
@@ -42,7 +42,7 @@ export default function MapScreen() {
                 {gyms.map(gym => (
                     <Marker
                         key={gym.id}
-                        coordinate={{ latitude: gym.latitude, longitude: gym.longitude }}
+                        coordinate={{latitude: gym.latitude, longitude: gym.longitude}}
                         title={gym.name}
                     />
                 ))}
