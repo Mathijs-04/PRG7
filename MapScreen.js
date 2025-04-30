@@ -29,7 +29,6 @@ export default function MapScreen() {
 
     return (
         <View style={styles.container}>
-            <Text>Map Screen</Text>
             <MapView
                 style={styles.map}
                 region={{

@@ -1,14 +1,16 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, StyleSheet, FlatList} from 'react-native';
+import {View, Text, StyleSheet, FlatList, ActivityIndicator} from 'react-native';
 
 export default function GymsScreen() {
     const [gyms, setGyms] = useState([]);
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         getGyms();
     }, []);
 
     async function getGyms() {
+        setLoading(true);
         const url = "https://raw.githubusercontent.com/Mathijs-04/PRG7-JSON/main/gyms.json";
         try {
             const response = await fetch(url, {
@@ -20,6 +22,7 @@ export default function GymsScreen() {
                 throw new Error(`Response status: ${response.status}`);
             }
             const data = await response.json();
+            setLoading(false);
             setGyms(data);
         } catch (error) {
             console.error(error.message);
@@ -28,13 +31,16 @@ export default function GymsScreen() {
 
     return (
         <View style={styles.container}>
-            <Text>Gyms Screen</Text>
-            <FlatList
-                data={gyms}
-                renderItem={({item}) => (
-                    <Text>{item.name}</Text>
-                )}
-            />
+            {loading ? (
+                <ActivityIndicator size="large"/>
+            ) : (
+                <FlatList
+                    data={gyms}
+                    renderItem={({item}) => (
+                        <Text>{item.name}</Text>
+                    )}
+                />
+            )}
         </View>
     );
 }
