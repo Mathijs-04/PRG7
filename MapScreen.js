@@ -2,11 +2,14 @@ import React, {useState, useEffect} from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 import MapView, {Marker} from 'react-native-maps';
 
-export default function MapScreen() {
+export default function MapScreen({route}) {
+    const {gym} = route.params || {};
     const [gyms, setGyms] = useState([]);
 
     useEffect(() => {
-        getGyms();
+        if (!gym) {
+            getGyms();
+        }
     }, []);
 
     async function getGyms() {
@@ -32,17 +35,17 @@ export default function MapScreen() {
             <MapView
                 style={styles.map}
                 region={{
-                    latitude: 52.1326,
-                    longitude: 5.2913,
-                    latitudeDelta: 4.0,
-                    longitudeDelta: 4.0,
+                    latitude: gym ? gym.latitude : 52.1326,
+                    longitude: gym ? gym.longitude : 5.2913,
+                    latitudeDelta: gym ? 0.05 : 4.0,
+                    longitudeDelta: gym ? 0.05 : 4.0,
                 }}
             >
-                {gyms.map(gym => (
+                {(gym ? [gym] : gyms).map(g => (
                     <Marker
-                        key={gym.id}
-                        coordinate={{latitude: gym.latitude, longitude: gym.longitude}}
-                        title={gym.name}
+                        key={g.id}
+                        coordinate={{latitude: g.latitude, longitude: g.longitude}}
+                        title={g.name}
                     />
                 ))}
             </MapView>

@@ -1,10 +1,18 @@
 import React from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import {View, Text, StyleSheet, Button} from 'react-native';
 
-export default function HomeScreen() {
+export default function HomeScreen({navigation}) {
     return (
         <View style={styles.container}>
-            <Text>Home Screen</Text>
+            <Text>Welcome to [App Name]</Text>
+            <Button
+                title={'Browse all gyms'}
+                onPress={() => navigation.navigate('Gyms')}
+            />
+            <Button
+                title={'View the map'}
+                onPress={() => navigation.navigate('Map')}
+            />
         </View>
     );
 }

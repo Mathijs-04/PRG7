@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, StyleSheet, FlatList, ActivityIndicator} from 'react-native';
+import {View, Text, StyleSheet, FlatList, ActivityIndicator, TouchableOpacity} from 'react-native';
 
-export default function GymsScreen() {
+export default function GymsScreen({navigation}) {
     const [gyms, setGyms] = useState([]);
     const [loading, setLoading] = useState(false);
 
@@ -36,8 +36,11 @@ export default function GymsScreen() {
             ) : (
                 <FlatList
                     data={gyms}
+                    keyExtractor={(item) => item.id.toString()}
                     renderItem={({item}) => (
-                        <Text>{item.name}</Text>
+                        <TouchableOpacity onPress={() => navigation.navigate('Map', {gym: item})}>
+                            <Text>{item.name}</Text>
+                        </TouchableOpacity>
                     )}
                 />
             )}
