@@ -1,7 +1,9 @@
 import React, {useState, useEffect} from 'react';
 import {View, Text, StyleSheet, FlatList, ActivityIndicator, TouchableOpacity} from 'react-native';
+import { useTheme } from './ThemeContext';
 
 export default function GymsScreen({navigation}) {
+    const { darkMode } = useTheme();
     const [gyms, setGyms] = useState([]);
     const [loading, setLoading] = useState(false);
 
@@ -29,6 +31,18 @@ export default function GymsScreen({navigation}) {
         }
     }
 
+    const styles = StyleSheet.create({
+        container: {
+            flex: 1,
+            backgroundColor: darkMode ? '#222' : '#FFF',
+            alignItems: 'center',
+            justifyContent: 'center',
+        },
+        text: {
+            color: darkMode ? '#FFF' : '#000',
+        },
+    });
+
     return (
         <View style={styles.container}>
             {loading ? (
@@ -39,7 +53,7 @@ export default function GymsScreen({navigation}) {
                     keyExtractor={(item) => item.id.toString()}
                     renderItem={({item}) => (
                         <TouchableOpacity onPress={() => navigation.navigate('Map', {gym: item})}>
-                            <Text>{item.name}</Text>
+                            <Text style={styles.text}>{item.name}</Text>
                         </TouchableOpacity>
                     )}
                 />
@@ -47,11 +61,3 @@ export default function GymsScreen({navigation}) {
         </View>
     );
 }
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-});

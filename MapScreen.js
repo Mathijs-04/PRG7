@@ -1,8 +1,10 @@
 import React, {useState, useEffect} from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 import MapView, {Marker} from 'react-native-maps';
+import { useTheme } from './ThemeContext';
 
 export default function MapScreen({route}) {
+    const { darkMode } = useTheme();
     const {gym} = route.params || {};
     const [gyms, setGyms] = useState([]);
 
@@ -30,6 +32,22 @@ export default function MapScreen({route}) {
         }
     }
 
+    const styles = StyleSheet.create({
+        container: {
+            flex: 1,
+            backgroundColor: darkMode ? '#222' : '#FFF',
+            alignItems: 'center',
+            justifyContent: 'center',
+        },
+        text: {
+            color: darkMode ? '#FFF' : '#000',
+        },
+        map: {
+            width: '100%',
+            height: '100%',
+        },
+    });
+
     return (
         <View style={styles.container}>
             <MapView
@@ -53,14 +71,3 @@ export default function MapScreen({route}) {
     );
 }
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    map: {
-        width: '100%',
-        height: '100%',
-    },
-});

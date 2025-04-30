@@ -6,19 +6,22 @@ import MapScreen from './MapScreen';
 import HomeScreen from './HomeScreen';
 import SettingScreen from './SettingScreen';
 import {NavigationContainer} from '@react-navigation/native';
+import {ThemeProvider} from "./ThemeContext";
 
 export default function App() {
     const Tab = createBottomTabNavigator();
 
     return (
-        <NavigationContainer>
-            <Tab.Navigator id={1}>
-                <Tab.Screen name="Home" component={HomeScreen}/>
-                <Tab.Screen name="Gyms" component={GymsScreen}/>
-                <Tab.Screen name="Map" component={MapScreen}/>
-                <Tab.Screen name="Settings" component={SettingScreen}/>
-            </Tab.Navigator>
-        </NavigationContainer>
+        <ThemeProvider>
+            <NavigationContainer>
+                <Tab.Navigator id={1}>
+                    <Tab.Screen name="Home" component={HomeScreen}/>
+                    <Tab.Screen name="Gyms" component={GymsScreen}/>
+                    <Tab.Screen name="Map" component={MapScreen}/>
+                    <Tab.Screen name="Settings" component={SettingScreen}/>
+                </Tab.Navigator>
+            </NavigationContainer>
+        </ThemeProvider>
     );
 }
 

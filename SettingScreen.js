@@ -1,35 +1,9 @@
-import React, {useEffect, useState} from 'react';
-import {View, Text, StyleSheet, Button, Switch} from 'react-native';
+import React from 'react';
+import { View, Text, StyleSheet, Switch } from 'react-native';
+import { useTheme } from './ThemeContext';
 
-export default function SettingScreen({navigation}) {
-    const [darkMode, setDarkMode] = useState(false);
-
-    const storeData = async (darkMode) => {
-        try {
-            const jsonValue = JSON.stringify(darkMode);
-            await AsyncStorage.setItem('mode', jsonValue);
-        } catch (e) {
-            console.log(e);
-        }
-    };
-
-    const getData = async () => {
-        try {
-            const jsonValue = await AsyncStorage.getItem('mode');
-            const mode = jsonValue != null ? JSON.parse(jsonValue) : false;
-            setDarkMode(mode);
-        } catch (e) {
-            console.log(e);
-        }
-    };
-
-    useEffect(() => {
-        getData();
-    }, []);
-
-    useEffect(() => {
-        storeData(darkMode);
-    }, [darkMode]);
+export default function SettingScreen() {
+    const { darkMode, toggleDarkMode } = useTheme();
 
     const styles = StyleSheet.create({
         container: {
@@ -38,14 +12,16 @@ export default function SettingScreen({navigation}) {
             alignItems: 'center',
             justifyContent: 'center',
         },
+        text: {
+            color: darkMode ? '#FFF' : '#000',
+            marginBottom: 20,
+        },
     });
 
     return (
         <View style={styles.container}>
-            <Text>Dark Mode</Text>
-            <Switch value={darkMode} onValueChange={(value) => setDarkMode(value)}/>
+            <Text style={styles.text}>Dark Mode</Text>
+            <Switch value={darkMode} onValueChange={toggleDarkMode} />
         </View>
     );
 }
-
-
