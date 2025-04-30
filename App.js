@@ -4,6 +4,7 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import GymsScreen from './GymsScreen';
 import MapScreen from './MapScreen';
 import HomeScreen from './HomeScreen';
+import SettingScreen from './SettingScreen';
 import {NavigationContainer} from '@react-navigation/native';
 
 export default function App() {
@@ -15,6 +16,7 @@ export default function App() {
                 <Tab.Screen name="Home" component={HomeScreen}/>
                 <Tab.Screen name="Gyms" component={GymsScreen}/>
                 <Tab.Screen name="Map" component={MapScreen}/>
+                <Tab.Screen name="Settings" component={SettingScreen}/>
             </Tab.Navigator>
         </NavigationContainer>
     );
