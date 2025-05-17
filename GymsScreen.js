@@ -1,14 +1,17 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, StyleSheet, FlatList, ActivityIndicator, TouchableOpacity} from 'react-native';
-import { useTheme } from './ThemeContext';
+import {View, Text, StyleSheet, FlatList, ActivityIndicator, TouchableOpacity, Button} from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {useTheme} from './ThemeContext';
 
 export default function GymsScreen({navigation}) {
-    const { darkMode } = useTheme();
+    const {darkMode} = useTheme();
     const [gyms, setGyms] = useState([]);
     const [loading, setLoading] = useState(false);
+    const [favorites, setFavorites] = useState([]);
 
     useEffect(() => {
         getGyms();
+        loadFavorites();
     }, []);
 
     async function getGyms() {
@@ -16,19 +19,36 @@ export default function GymsScreen({navigation}) {
         const url = "https://raw.githubusercontent.com/Mathijs-04/PRG7-JSON/main/gyms.json";
         try {
             const response = await fetch(url, {
-                headers: {
-                    'Accept': 'application/json'
-                }
+                headers: {'Accept': 'application/json'}
             });
-            if (!response.ok) {
-                throw new Error(`Response status: ${response.status}`);
-            }
+            if (!response.ok) throw new Error(`Response status: ${response.status}`);
             const data = await response.json();
-            setLoading(false);
             setGyms(data);
         } catch (error) {
             console.error(error.message);
+        } finally {
+            setLoading(false);
         }
+    }
+
+    async function loadFavorites() {
+        try {
+            const favs = await AsyncStorage.getItem('favoriteGyms');
+            setFavorites(favs ? JSON.parse(favs) : []);
+        } catch (e) {
+            console.log(e);
+        }
+    }
+
+    async function toggleFavorite(gymId) {
+        let newFavorites;
+        if (favorites.includes(gymId)) {
+            newFavorites = favorites.filter(id => id !== gymId);
+        } else {
+            newFavorites = [...favorites, gymId];
+        }
+        setFavorites(newFavorites);
+        await AsyncStorage.setItem('favoriteGyms', JSON.stringify(newFavorites));
     }
 
     const styles = StyleSheet.create({
@@ -40,6 +60,13 @@ export default function GymsScreen({navigation}) {
         },
         text: {
             color: darkMode ? '#FFF' : '#000',
+            padding: 8,
+        },
+        gymRow: {
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            marginVertical: 4,
         },
     });
 
@@ -52,9 +79,16 @@ export default function GymsScreen({navigation}) {
                     data={gyms}
                     keyExtractor={(item) => item.id.toString()}
                     renderItem={({item}) => (
-                        <TouchableOpacity onPress={() => navigation.navigate('Map', {gym: item})}>
-                            <Text style={styles.text}>{item.name}</Text>
-                        </TouchableOpacity>
+                        <View style={styles.gymRow}>
+                            <TouchableOpacity onPress={() => navigation.navigate('Map', {gym: item})}>
+                                <Text style={styles.text}>{item.name}</Text>
+                            </TouchableOpacity>
+                            <Button
+                                title={favorites.includes(item.id) ? "★" : "☆"}
+                                onPress={() => toggleFavorite(item.id)}
+                                color={favorites.includes(item.id) ? "#FFD700" : "#888"}
+                            />
+                        </View>
                     )}
                 />
             )}
