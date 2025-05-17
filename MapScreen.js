@@ -1,12 +1,57 @@
 import React, {useState, useEffect} from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 import MapView, {Marker} from 'react-native-maps';
-import { useTheme } from './ThemeContext';
+import * as Location from 'expo-location';
+import {useTheme} from './ThemeContext';
 
 export default function MapScreen({route}) {
-    const { darkMode } = useTheme();
+    const {darkMode} = useTheme();
     const {gym} = route.params || {};
     const [gyms, setGyms] = useState([]);
+    const [region, setRegion] = useState(null);
+
+    useEffect(() => {
+        let subscription;
+
+        async function getCurrentLocation() {
+            let {status} = await Location.requestForegroundPermissionsAsync();
+            if (status !== 'granted') {
+                return;
+            }
+            let location = await Location.getCurrentPositionAsync({});
+            setRegion({
+                latitude: location.coords.latitude,
+                longitude: location.coords.longitude,
+                latitudeDelta: gym ? 0.05 : 0.005,
+                longitudeDelta: gym ? 0.05 : 0.005,
+            });
+        }
+
+        getCurrentLocation();
+
+        (async () => {
+            subscription = await Location.watchPositionAsync(
+                {
+                    accuracy: Location.Accuracy.High,
+                    timeInterval: 2000,
+                },
+                (location) => {
+                    setRegion({
+                        latitude: location.coords.latitude,
+                        longitude: location.coords.longitude,
+                        latitudeDelta: gym ? 0.05 : 0.005,
+                        longitudeDelta: gym ? 0.05 : 0.005,
+                    });
+                }
+            );
+        })();
+
+        return () => {
+            if (subscription) {
+                subscription.remove();
+            }
+        };
+    }, [gym]);
 
     useEffect(() => {
         if (!gym) {
@@ -48,16 +93,22 @@ export default function MapScreen({route}) {
         },
     });
 
+    const mapRegion = gym
+        ? {
+            latitude: gym.latitude,
+            longitude: gym.longitude,
+            latitudeDelta: 0.05,
+            longitudeDelta: 0.05,
+        }
+        : region;
+
     return (
         <View style={styles.container}>
             <MapView
                 style={styles.map}
-                region={{
-                    latitude: gym ? gym.latitude : 52.1326,
-                    longitude: gym ? gym.longitude : 5.2913,
-                    latitudeDelta: gym ? 0.05 : 4.0,
-                    longitudeDelta: gym ? 0.05 : 4.0,
-                }}
+                region={mapRegion}
+                showsUserLocation={true}
+                followsUserLocation={true}
             >
                 {(gym ? [gym] : gyms).map(g => (
                     <Marker
