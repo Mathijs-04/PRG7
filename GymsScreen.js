@@ -24,7 +24,18 @@ export default function GymsScreen({navigation}) {
             if (!response.ok) throw new Error(`Response status: ${response.status}`);
             const data = await response.json();
             setGyms(data);
+            await AsyncStorage.setItem('gymsCache', JSON.stringify(data));
         } catch (error) {
+            try {
+                const cached = await AsyncStorage.getItem('gymsCache');
+                if (cached) {
+                    setGyms(JSON.parse(cached));
+                } else {
+                    setGyms([]);
+                }
+            } catch (e) {
+                setGyms([]);
+            }
             console.error(error.message);
         } finally {
             setLoading(false);

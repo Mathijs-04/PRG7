@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {View, Text, StyleSheet} from 'react-native';
+import {useNetInfo} from "@react-native-community/netinfo";
 import MapView, {Marker} from 'react-native-maps';
 import * as Location from 'expo-location';
 import {useTheme} from './ThemeContext';
@@ -9,10 +10,10 @@ export default function MapScreen({route}) {
     const {gym} = route.params || {};
     const [gyms, setGyms] = useState([]);
     const [region, setRegion] = useState(null);
+    const netInfo = useNetInfo();
 
     useEffect(() => {
         let subscription;
-
         async function getCurrentLocation() {
             let {status} = await Location.requestForegroundPermissionsAsync();
             if (status !== 'granted') {
@@ -26,9 +27,7 @@ export default function MapScreen({route}) {
                 longitudeDelta: gym ? 0.05 : 0.005,
             });
         }
-
         getCurrentLocation();
-
         (async () => {
             subscription = await Location.watchPositionAsync(
                 {
@@ -45,7 +44,6 @@ export default function MapScreen({route}) {
                 }
             );
         })();
-
         return () => {
             if (subscription) {
                 subscription.remove();
@@ -102,6 +100,14 @@ export default function MapScreen({route}) {
         }
         : region;
 
+    if (netInfo.isConnected === false) {
+        return (
+            <View style={styles.container}>
+                <Text style={styles.text}>No internet connection. Map is disabled.</Text>
+            </View>
+        );
+    }
+
     return (
         <View style={styles.container}>
             <MapView
@@ -121,4 +127,3 @@ export default function MapScreen({route}) {
         </View>
     );
 }
-
