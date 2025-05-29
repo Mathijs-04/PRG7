@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, StyleSheet, FlatList, ActivityIndicator, TouchableOpacity, Button} from 'react-native';
+import {View, Text, StyleSheet, FlatList, ActivityIndicator, TouchableOpacity} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useTheme} from './ThemeContext';
 
@@ -65,19 +65,33 @@ export default function GymsScreen({navigation}) {
     const styles = StyleSheet.create({
         container: {
             flex: 1,
-            backgroundColor: darkMode ? '#222' : '#FFF',
-            alignItems: 'center',
-            justifyContent: 'center',
+            backgroundColor: darkMode ? '#222' : '#FFFFFF',
         },
         text: {
-            color: darkMode ? '#FFF' : '#000',
-            padding: 8,
+            color: darkMode ? '#FFF' : '#1C1C1E',
+            padding: 12,
+            fontSize: 16,
         },
         gymRow: {
             flexDirection: 'row',
             alignItems: 'center',
             justifyContent: 'space-between',
-            marginVertical: 4,
+            paddingVertical: 12,
+            paddingHorizontal: 16,
+            borderBottomWidth: 1,
+            borderBottomColor: darkMode ? '#333' : '#F2F2F7',
+        },
+        header: {
+            fontSize: 24,
+            fontWeight: '700',
+            color: darkMode ? '#FFF' : '#1C1C1E',
+            padding: 16,
+            backgroundColor: darkMode ? '#333' : '#FFFFFF',
+        },
+        favoriteButton: {
+            backgroundColor: '#FF9500',
+            padding: 8,
+            borderRadius: 20,
         },
     });
 
@@ -87,18 +101,29 @@ export default function GymsScreen({navigation}) {
                 <ActivityIndicator size="large"/>
             ) : (
                 <FlatList
+                    ListHeaderComponent={<Text style={styles.header}>Gyms</Text>}
                     data={gyms}
                     keyExtractor={(item) => item.id.toString()}
                     renderItem={({item}) => (
                         <View style={styles.gymRow}>
-                            <TouchableOpacity onPress={() => navigation.navigate('Map', {gym: item})}>
+                            <TouchableOpacity
+                                onPress={() => navigation.navigate('Map', {gym: item})}
+                                style={{flex: 1}}
+                            >
                                 <Text style={styles.text}>{item.name}</Text>
                             </TouchableOpacity>
-                            <Button
-                                title={favorites.includes(item.id) ? "★" : "☆"}
+                            <TouchableOpacity
                                 onPress={() => toggleFavorite(item.id)}
-                                color={favorites.includes(item.id) ? "#FFD700" : "#888"}
-                            />
+                                style={[
+                                    styles.favoriteButton,
+                                    !favorites.includes(item.id) && {backgroundColor: darkMode ? '#444' : '#E4E4E6'}
+                                ]}
+                            >
+                                <Text
+                                    style={{color: favorites.includes(item.id) ? '#FFF' : darkMode ? '#888' : '#8E8E93'}}>
+                                    {favorites.includes(item.id) ? "★" : "☆"}
+                                </Text>
+                            </TouchableOpacity>
                         </View>
                     )}
                 />

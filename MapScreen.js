@@ -88,9 +88,7 @@ export default function MapScreen({route}) {
     const styles = StyleSheet.create({
         container: {
             flex: 1,
-            backgroundColor: darkMode ? '#222' : '#FFF',
-            alignItems: 'center',
-            justifyContent: 'center',
+            backgroundColor: darkMode ? '#222' : '#FFFFFF',
         },
         text: {
             color: darkMode ? '#FFF' : '#000',
@@ -108,11 +106,31 @@ export default function MapScreen({route}) {
             alignItems: 'center',
             justifyContent: 'center',
             zIndex: 10,
+            backgroundColor: darkMode ? '#333' : '#FFFFFF',
+            borderRadius: 30,
+            padding: 8,
+            elevation: 6,
+            shadowColor: '#000',
+            shadowOffset: {width: 0, height: 2},
+            shadowOpacity: 0.2,
+            shadowRadius: 4,
         },
         arrowImage: {
             width: 40,
             height: 40,
             resizeMode: 'contain',
+        },
+        offlineContainer: {
+            flex: 1,
+            backgroundColor: '#FF9500',
+            padding: 16,
+            alignItems: 'center',
+            justifyContent: 'center',
+        },
+        offlineText: {
+            color: '#FFFFFF',
+            fontWeight: '600',
+            fontSize: 18,
         },
     });
 
@@ -151,8 +169,8 @@ export default function MapScreen({route}) {
 
     if (netInfo.isConnected === false) {
         return (
-            <View style={styles.container}>
-                <Text style={styles.text}>{t('10')} </Text>
+            <View style={styles.offlineContainer}>
+                <Text style={styles.offlineText}>{t('10')}</Text>
             </View>
         );
     }
@@ -170,6 +188,7 @@ export default function MapScreen({route}) {
                         key={g.id}
                         coordinate={{latitude: g.latitude, longitude: g.longitude}}
                         title={g.name}
+                        pinColor="#FF9500"
                     />
                 ))}
             </MapView>
