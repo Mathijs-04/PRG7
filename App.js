@@ -1,26 +1,36 @@
-import {StatusBar} from 'expo-status-bar';
-import {StyleSheet, Text, View} from 'react-native';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import { StatusBar } from 'expo-status-bar';
+import { StyleSheet } from 'react-native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import GymsScreen from './GymsScreen';
 import MapScreen from './MapScreen';
 import HomeScreen from './HomeScreen';
 import SettingScreen from './SettingScreen';
-import {NavigationContainer} from '@react-navigation/native';
-import {ThemeProvider} from "./ThemeContext";
+import { NavigationContainer } from '@react-navigation/native';
+import { ThemeProvider } from './ThemeContext';
+import { LanguageProvider, useLanguage } from './LanguageContext';
+
+const Tab = createBottomTabNavigator();
+
+function MainTabs() {
+    const { t } = useLanguage();
+    return (
+        <Tab.Navigator id={1}>
+            <Tab.Screen name={t('1')} component={HomeScreen} />
+            <Tab.Screen name={t('2')} component={GymsScreen} />
+            <Tab.Screen name={t('3')} component={MapScreen} />
+            <Tab.Screen name={t('4')} component={SettingScreen} />
+        </Tab.Navigator>
+    );
+}
 
 export default function App() {
-    const Tab = createBottomTabNavigator();
-
     return (
         <ThemeProvider>
-            <NavigationContainer>
-                <Tab.Navigator id={1}>
-                    <Tab.Screen name="Home" component={HomeScreen}/>
-                    <Tab.Screen name="Gyms" component={GymsScreen}/>
-                    <Tab.Screen name="Map" component={MapScreen}/>
-                    <Tab.Screen name="Settings" component={SettingScreen}/>
-                </Tab.Navigator>
-            </NavigationContainer>
+            <LanguageProvider>
+                <NavigationContainer>
+                    <MainTabs />
+                </NavigationContainer>
+            </LanguageProvider>
         </ThemeProvider>
     );
 }

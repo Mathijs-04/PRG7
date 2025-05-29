@@ -1,0 +1,57 @@
+{
+  "1": {
+    "en": "Home",
+    "nl": "Home",
+    "de": "Home"
+  },
+  "2": {
+    "en": "Gyms",
+    "nl": "Gyms",
+    "de": "Gyms"
+  },
+  "3": {
+    "en": "Map",
+    "nl": "Kaart",
+    "de": "Karte"
+  },
+  "4": {
+    "en": "Settings",
+    "nl": "Instellingen",
+    "de": "Einstellungen"
+  },
+  "5": {
+    "en": "Welcome to App Name",
+    "nl": "Welkom bij App Name",
+    "de": "Willkommen bei App Name"
+  },
+  "6": {
+    "en": "Browse all gyms",
+    "nl": "Bekijk alle gyms",
+    "de": "Alle gyms durchsuchen"
+  },
+  "7": {
+    "en": "View the map",
+    "nl": "Bekijk de kaart",
+    "de": "Karte anzeigen"
+  },
+  "8": {
+    "en": "Dark Mode",
+    "nl": "Donkere Modus",
+    "de": "Dunkler Modus"
+  },
+  "9": {
+    "en": "Biometrics not available",
+    "nl": "Biometrie niet beschikbaar",
+    "de": "Biometrie nicht verfügbar"
+  },
+  "10": {
+    "en": "No internet connection. Map is disabled.",
+    "nl": "Geen internetverbinding. Kaart is uitgeschakeld.",
+    "de": "Keine Internetverbindung. Karte ist deaktiviert."
+  },
+  "11": {
+    "en": "Language",
+    "nl": "Taal",
+    "de": "Sprache"
+  }
+}
