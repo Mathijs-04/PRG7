@@ -170,7 +170,7 @@ export default function MapScreen({route}) {
     if (netInfo.isConnected === false) {
         return (
             <View style={styles.offlineContainer}>
-                <Text style={styles.offlineText}>{t('10')}</Text>
+                <Text style={styles.offlineText}>No internet connection</Text>
             </View>
         );
     }
